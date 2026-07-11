@@ -50,6 +50,12 @@ function InvestigationScreen() {
   const [eliminatedSnippet, setEliminatedSnippet] = useState(null);
   const [voiceParticipants, setVoiceParticipants] = useState({});
 
+  // Phase & Voting State
+  const [phase, setPhase] = useState("investigation");
+  const [myVote, setMyVote] = useState("");
+  const [voted, setVoted] = useState(false);
+  const [finalReveal, setFinalReveal] = useState("");
+
   // Action State
   const [actionType, setActionType] = useState("ask");
   const [actionTarget, setActionTarget] = useState("");
@@ -888,6 +894,85 @@ function InvestigationScreen() {
             )}
           </div>
         )}
+      </div>
+    );
+  };
+
+  const MainArea = () => {
+    if (phase === 'voting') {
+      return (
+        <div className="h-full flex flex-col items-center justify-center p-8 bg-[color:var(--color-bg-base)] text-center">
+          <div className="max-w-md border border-[color:var(--color-border-hairline-strong)] bg-[color:var(--color-bg-elevated)] p-8">
+            <span className="tracked-caps text-[10px] text-[color:var(--color-accent-blood)] font-bold">Phase: Accusation Voting</span>
+            <h2 className="font-serif-display text-3xl mt-4 text-[color:var(--color-text-primary)]">Cast Your Accusation</h2>
+            <p className="text-xs text-[color:var(--color-text-secondary)] mt-2 leading-relaxed">
+              Read the timeline, compare dossiers, and discuss. Choose the suspect you believe is the murderer.
+            </p>
+            {voted ? (
+              <div className="mt-8">
+                <span className="text-sm tracked-caps px-4 py-2 bg-[rgba(113,26,36,0.15)] text-[color:var(--color-accent-blood-hover)] border border-[color:var(--color-accent-blood)]">
+                  Vote Cast. Awaiting other investigators...
+                </span>
+              </div>
+            ) : (
+              <div className="mt-8 space-y-4">
+                <select
+                  value={myVote}
+                  onChange={(e) => setMyVote(e.target.value)}
+                  className="w-full bg-[color:var(--color-bg-base)] border border-[color:var(--color-border-hairline)] text-[color:var(--color-text-primary)] text-sm p-3 outline-none focus:border-[color:var(--color-accent-blood)]"
+                >
+                  <option value="">-- Choose Suspect --</option>
+                  {suspects.map(s => <option key={s.id} value={s.name}>{s.name}</option>)}
+                </select>
+                <button
+                  onClick={handleVoteSubmit}
+                  disabled={!myVote}
+                  className="w-full bg-[color:var(--color-accent-blood)] text-[color:var(--color-text-primary)] py-3 tracked-caps text-xs hover:bg-[color:var(--color-accent-blood-hover)] disabled:opacity-50 transition-colors"
+                >
+                  Submit Vote
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      );
+    }
+
+    if (phase === 'result') {
+      return (
+        <div className="h-full flex flex-col bg-[color:var(--color-bg-base)] overflow-y-auto p-6 md:p-12 pb-24 relative">
+          <div className="max-w-2xl mx-auto space-y-8">
+            <div className="border-b border-[color:var(--color-border-hairline-strong)] pb-6">
+              <span className="tracked-caps text-[10px] text-[color:var(--color-accent-blood)] font-bold font-semibold">Case Closed</span>
+              <h1 className="font-serif-display text-4xl mt-3 text-[color:var(--color-text-primary)]">The Game Master's Reveal</h1>
+            </div>
+            <div className="prose prose-invert text-[color:var(--color-text-secondary)] leading-relaxed font-serif text-md space-y-4 whitespace-pre-line">
+              {finalReveal || "Generating case file reveal..."}
+            </div>
+            <div className="pt-8">
+              <Link to="/" className="inline-block border border-[color:var(--color-border-hairline)] text-xs tracked-caps px-6 py-3 hover:bg-[color:var(--color-bg-elevated)] text-[color:var(--color-text-primary)] transition-colors">
+                Return to Title Screen
+              </Link>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div className="h-full flex flex-col relative">
+        {session.hostId === playerId && (
+          <div className="bg-[color:var(--color-bg-elevated)] border-b border-[color:var(--color-border-hairline)] px-4 py-2 flex items-center justify-between">
+            <span className="text-[10px] tracked-caps text-[color:var(--color-text-tertiary)]">Lead Investigator Dashboard</span>
+            <button
+              onClick={handleStartVoting}
+              className="text-[10px] tracked-caps bg-[color:var(--color-accent-blood)] text-[color:var(--color-text-primary)] px-3 py-1.5 hover:bg-[color:var(--color-accent-blood-hover)] transition-colors"
+            >
+              Start Accusation Vote
+            </button>
+          </div>
+        )}
+        <LogPanel />
       </div>
     );
   };

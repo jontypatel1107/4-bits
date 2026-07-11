@@ -12,6 +12,8 @@ import Game from '../models/game.model.js';
 
 const storyEngine = new StoryEngine({ aiClient: new OllamaService() });
 
+const storyEngine = new StoryEngine({ aiClient: new OllamaService() });
+
 function generateId(prefix) {
   return prefix + '_' + nanoid(8);
 }

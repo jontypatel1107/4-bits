@@ -78,72 +78,10 @@ function Home() {
         </div>
       </section>
 
-      <HowItWorks />
       <Footer />
       <SettingsModal open={settingsOpen} onClose={() => setSettingsOpen(false)} />
     </main>
   );
-
-}
-
-
-
-function HowItWorks() {
-  const steps = [
-  {
-    n: "I",
-    title: "A new crime, every session",
-    body: "The scene, the motive, and the guilty party are freshly generated the moment your room opens. Nothing is prewritten. Nothing repeats."
-  },
-  {
-    n: "II",
-    title: "A private dossier for each player",
-    body: "Every investigator receives their own file — witnesses interviewed, evidence catalogued, alibis half-remembered. No two dossiers overlap completely."
-  },
-  {
-    n: "III",
-    title: "Investigate together",
-    body: "Compare notes across the table. Contradict each other. The truth only surfaces when the fragments are laid side by side."
-  },
-  {
-    n: "IV",
-    title: "The truth, at the end",
-    body: "When the last statement is heard, the case file opens. The full sequence of events is revealed — including what no single investigator could have known alone."
-  }];
-
-
-  return (
-    <section className="bg-[color:var(--color-bg-base)] px-6 py-24 md:py-32 md:px-10">
-      <div className="mx-auto max-w-6xl">
-        <div className="mb-14">
-          <span className="tracked-caps text-[11px] text-[color:var(--color-text-tertiary)]">
-            The Procedure
-          </span>
-          <h2 className="font-serif-display mt-3 text-3xl md:text-4xl text-[color:var(--color-text-primary)]">
-            How it works
-          </h2>
-        </div>
-
-        <div className="grid grid-cols-1 gap-px bg-[color:var(--color-border-hairline)] md:grid-cols-2">
-          {steps.map((s) =>
-          <article
-            key={s.n}
-            className="bg-[color:var(--color-bg-elevated)] p-8 md:p-10">
-            
-              <div className="font-serif-display text-2xl text-[color:var(--color-accent-blood)]">
-                {s.n}
-              </div>
-              <h3 className="font-serif-display mt-4 text-xl text-[color:var(--color-text-primary)]">
-                {s.title}
-              </h3>
-              <p className="mt-3 text-sm leading-relaxed text-[color:var(--color-text-secondary)]">
-                {s.body}
-              </p>
-            </article>
-          )}
-        </div>
-      </div>
-    </section>);
 
 }
 
